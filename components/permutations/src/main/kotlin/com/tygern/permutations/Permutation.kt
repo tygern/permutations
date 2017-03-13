@@ -4,6 +4,15 @@ package com.tygern.permutations
 data class Permutation internal constructor(private val digits: List<Int>) {
     fun order() = digits.size
     fun goesTo(i: Int) = digits.indexOf(i) + 1
+    fun inverse(): Permutation {
+        val resultDigits = IntArray(order())
+
+        digits.forEachIndexed { index, digit ->
+            resultDigits[digit - 1] = index + 1
+        }
+
+        return Permutation(resultDigits.toList())
+    }
 }
 
 fun p(vararg digits: Int): Permutation {

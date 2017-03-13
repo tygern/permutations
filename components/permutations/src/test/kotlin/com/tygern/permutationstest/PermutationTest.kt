@@ -67,7 +67,7 @@ class PermutationTest : Test({
             assertThat(compose(p(6, 1, 3, 4, 5, 2), p(1, 3, 2, 4, 6, 5))).isEqualTo(p(5, 1, 2, 4, 6, 3))
         }
 
-        test("wrong orger") {
+        test("wrong order") {
             expectException(IllegalOperationException::class, "invalid operation") {
                 compose(p(1, 3, 2, 4), p(2, 1, 3, 4, 5))
             }
@@ -75,6 +75,20 @@ class PermutationTest : Test({
             expectException(IllegalPermutationException::class, "invalid permutation") {
                 p(1, 2, 3, 4, 5, 1)
             }
+        }
+    }
+
+    describe("inverse") {
+        test {
+            assertThat(p(2, 1, 3, 4).inverse()).isEqualTo(p(2, 1, 3, 4))
+            assertThat(p(3, 1, 2, 4).inverse()).isEqualTo(p(2, 3, 1, 4))
+            assertThat(p(6, 1, 3, 4, 5, 2).inverse()).isEqualTo(p(2, 6, 3, 4, 5, 1))
+        }
+
+        test("identity") {
+            val element = p(6, 1, 3, 4, 5, 2)
+
+            assertThat(compose(element, element.inverse())).isEqualTo(p(1, 2, 3, 4, 5, 6))
         }
     }
 })
