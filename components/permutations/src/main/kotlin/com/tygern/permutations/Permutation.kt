@@ -18,13 +18,7 @@ class Permutation(vararg numbers: Int) {
     fun goesTo(i: Int) = digits.indexOf(i) + 1
     fun mapsFrom(i: Int) = digits[i - 1]
 
-    fun inverse() = IntArray(order).let {
-        digits.forEachIndexed { index, digit ->
-            it[digit - 1] = index + 1
-        }
-
-        Permutation(*it)
-    }
+    fun inverse() = Permutation(*(1..order).map { goesTo(it) }.toIntArray())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
