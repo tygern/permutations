@@ -36,15 +36,4 @@ class Permutation(vararg numbers: Int) {
     override fun toString() = "Permutation$digits"
 }
 
-fun compose(left: Permutation, right: Permutation):Permutation {
-    if (left.order != right.order) {
-        throw IllegalOperationException("invalid operation")
-    }
-
-    val map = (1..right.order).map { element -> right.mapsFrom(left.mapsFrom(element)) }
-
-    return Permutation(*map.toIntArray())
-}
-
 class IllegalPermutationException(message: String) : IllegalStateException(message)
-class IllegalOperationException(message: String) : IllegalStateException(message)
