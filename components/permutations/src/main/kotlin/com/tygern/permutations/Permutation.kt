@@ -1,9 +1,12 @@
 package com.tygern.permutations
 
 
-data class Permutation internal constructor(private val digits: List<Int>)
+data class Permutation internal constructor(private val digits: List<Int>) {
+    fun order() = digits.size
+    fun goesTo(i: Int) = digits.indexOf(i) + 1
+}
 
-fun createPermutation(vararg digits: Int):Permutation {
+fun p(vararg digits: Int): Permutation {
     val length = digits.size
 
     val validDigits = digits
@@ -17,5 +20,21 @@ fun createPermutation(vararg digits: Int):Permutation {
     return Permutation(digits.asList())
 }
 
+fun compose(left: Permutation, right: Permutation): Permutation {
+    if (left.order() != right.order()) {
+        throw IllegalOperationException("invalid operation")
+    }
+
+    val order = right.order()
+    val resultDigits = IntArray(order)
+
+    (1..order).forEach {
+        resultDigits[left.goesTo(right.goesTo(it)) - 1] = it
+    }
+
+
+    return Permutation(resultDigits.toList())
+}
 
 class IllegalPermutationException(message: String) : IllegalStateException(message)
+class IllegalOperationException(message: String) : IllegalStateException(message)
