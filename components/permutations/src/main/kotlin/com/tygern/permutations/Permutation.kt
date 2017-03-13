@@ -1,48 +1,55 @@
 package com.tygern.permutations
 
+class Permutation(vararg numbers: Int) {
 
-data class Permutation internal constructor(private val digits: List<Int>) {
-    fun order() = digits.size
+    val digits = numbers.asList()
+    val order = digits.size
+
+    init {
+        val numberOfValidDigits = digits
+                .distinct()
+                .count { it in 1..order }
+
+        if (numberOfValidDigits != order) {
+            throw IllegalPermutationException("invalid permutation")
+        }
+    }
+
     fun goesTo(i: Int) = digits.indexOf(i) + 1
-    fun inverse(): Permutation {
-        val resultDigits = IntArray(order())
+    fun mapsFrom(i: Int) = digits[i - 1]
 
+    fun inverse() = IntArray(order).let {
         digits.forEachIndexed { index, digit ->
-            resultDigits[digit - 1] = index + 1
+            it[digit - 1] = index + 1
         }
 
-        return Permutation(resultDigits.toList())
-    }
-}
-
-fun p(vararg digits: Int): Permutation {
-    val length = digits.size
-
-    val validDigits = digits
-            .distinct()
-            .filter { it in 1..length }
-
-    if (validDigits.size != length) {
-        throw IllegalPermutationException("invalid permutation")
+        Permutation(*it)
     }
 
-    return Permutation(digits.asList())
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as Permutation
+
+        if (digits != other.digits) return false
+
+        return true
+    }
+
+    override fun hashCode() = digits.hashCode()
+
+    override fun toString() = "Permutation$digits"
 }
 
-fun compose(left: Permutation, right: Permutation): Permutation {
-    if (left.order() != right.order()) {
+fun compose(left: Permutation, right: Permutation):Permutation {
+    if (left.order != right.order) {
         throw IllegalOperationException("invalid operation")
     }
 
-    val order = right.order()
-    val resultDigits = IntArray(order)
+    val map = (1..right.order).map { element -> right.mapsFrom(left.mapsFrom(element)) }
 
-    (1..order).forEach {
-        resultDigits[left.goesTo(right.goesTo(it)) - 1] = it
-    }
-
-
-    return Permutation(resultDigits.toList())
+    return Permutation(*map.toIntArray())
 }
 
 class IllegalPermutationException(message: String) : IllegalStateException(message)
