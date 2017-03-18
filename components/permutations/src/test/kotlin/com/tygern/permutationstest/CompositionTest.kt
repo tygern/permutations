@@ -24,7 +24,7 @@ class CompositionTest : Test({
             assertThat(Composition(p2, p1).reduce()).isEqualTo(Permutation(2, 3, 1, 4))
 
             assertThat(Composition(Permutation(6, 1, 3, 4, 5, 2), Permutation(1, 3, 2, 4, 6, 5)).reduce())
-                    .isEqualTo(Permutation(5, 1, 2, 4, 6, 3))
+                .isEqualTo(Permutation(5, 1, 2, 4, 6, 3))
         }
 
         test("more than two") {
@@ -55,7 +55,7 @@ class CompositionTest : Test({
             val s3 = Permutation(1, 2, 4, 3)
 
             assertThat(Composition(s3, s1).equivalent(Composition(s1, s3))).isTrue()
-            assertThat(Composition(s1, s1).equivalent(Composition(identity(4)))).isTrue()
+            assertThat(Composition(s1, s1).equivalent(Composition(Permutation(1, 2, 3, 4)))).isTrue()
         }
     }
 })

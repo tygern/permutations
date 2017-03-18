@@ -20,7 +20,6 @@ class Composition(vararg candidates: Permutation) {
 
     fun equivalent(other: Composition) = this.reduce() == other.reduce()
 
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false

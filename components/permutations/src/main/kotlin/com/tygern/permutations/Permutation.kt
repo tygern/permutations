@@ -36,6 +36,4 @@ class Permutation(vararg numbers: Int) {
     override fun toString() = "Permutation$digits"
 }
 
-fun identity(order: Int) = Permutation(*1.rangeTo(order).toList().toIntArray())
-
 class IllegalPermutationException(message: String) : IllegalStateException(message)
