@@ -7,8 +7,8 @@ class Permutation(vararg numbers: Int) {
 
     init {
         val numberOfValidDigits = digits
-                .distinct()
-                .count { it in 1..order }
+            .distinct()
+            .count { it in 1..order }
 
         if (numberOfValidDigits != order) {
             throw IllegalPermutationException("invalid permutation")
@@ -35,5 +35,7 @@ class Permutation(vararg numbers: Int) {
 
     override fun toString() = "Permutation$digits"
 }
+
+fun identity(order: Int) = Permutation(*1.rangeTo(order).toList().toIntArray())
 
 class IllegalPermutationException(message: String) : IllegalStateException(message)

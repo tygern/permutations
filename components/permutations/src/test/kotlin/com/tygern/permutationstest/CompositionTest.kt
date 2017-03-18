@@ -1,14 +1,12 @@
 package com.tygern.permutationstest
 
-import com.tygern.permutations.Composition
-import com.tygern.permutations.IllegalCompositionException
-import com.tygern.permutations.Permutation
+import com.tygern.permutations.*
 import io.damo.aspen.Test
 import io.damo.aspen.expectException
 import org.assertj.core.api.Assertions.assertThat
 
 
-class CompositionTestTest : Test({
+class CompositionTest : Test({
     val p1 = Permutation(2, 1, 3, 4)
     val p2 = Permutation(1, 3, 2, 4)
 
@@ -31,6 +29,33 @@ class CompositionTestTest : Test({
 
         test("more than two") {
             assertThat(Composition(Permutation(1, 2, 4, 3), p1, p2).reduce()).isEqualTo(Permutation(3, 1, 4, 2))
+        }
+    }
+
+    describe("equals") {
+        test {
+            assertThat(Composition(p1, p2)).isEqualTo(Composition(p1, p2))
+            assertThat(Composition(p2, p1)).isNotEqualTo(Composition(p1, p2))
+        }
+
+        test("equivalent not equal") {
+            val s1 = Permutation(2, 1, 3, 4)
+            val s3 = Permutation(1, 2, 4, 3)
+
+            assertThat(Composition(s1, s3)).isNotEqualTo(Composition(s3, s1))
+        }
+    }
+
+    describe("equivalent") {
+        test {
+            assertThat(Composition(p1, p2).equivalent(Composition(p1, p2))).isTrue()
+            assertThat(Composition(p2, p1).equivalent(Composition(p1, p2))).isFalse()
+
+            val s1 = Permutation(2, 1, 3, 4)
+            val s3 = Permutation(1, 2, 4, 3)
+
+            assertThat(Composition(s3, s1).equivalent(Composition(s1, s3))).isTrue()
+            assertThat(Composition(s1, s1).equivalent(Composition(identity(4)))).isTrue()
         }
     }
 })
