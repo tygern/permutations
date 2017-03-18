@@ -18,9 +18,24 @@ class A(val order: Int) {
     }
 
 
-    fun element(vararg generators: Int)
-        = Composition(*generators.map { s(it) }.toTypedArray())
-        .reduce()
+    fun element(vararg generators: Int) =
+        Composition(*generators.map { s(it) }.toTypedArray()).reduce()
+
+    fun reduce(permutation: Permutation): Composition {
+        val permutations = mutableListOf<Permutation>()
+
+        val digits = mutableListOf(*permutation.digits.toTypedArray())
+
+        (order + 1).downTo(1).forEach {
+            val index = digits.indexOf(it)
+
+            (index + 1).rangeTo(it - 1).forEach { i -> permutations.add(s(i)) }
+
+            digits.removeAt(index)
+        }
+
+        return Composition(*permutations.toTypedArray())
+    }
 
     private fun validGenerator(i: Int) = 1.rangeTo(order).contains(i)
 }

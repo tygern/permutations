@@ -43,6 +43,10 @@ class Composition(vararg candidates: Permutation) {
 
         return Permutation(*newDigits.toIntArray())
     }
+
+    override fun toString(): String {
+        return "Composition(permutations=$permutations)"
+    }
 }
 
 class IllegalCompositionException(message: String) : IllegalStateException(message)
