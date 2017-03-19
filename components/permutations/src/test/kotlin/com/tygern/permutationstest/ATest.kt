@@ -5,7 +5,7 @@ import io.damo.aspen.Test
 import io.damo.aspen.expectException
 import org.assertj.core.api.Assertions.assertThat
 
-class TypeATest : Test({
+class ATest : Test({
     val A3 = A(3)
     val A4 = A(4)
     val A5 = A(5)
@@ -17,11 +17,13 @@ class TypeATest : Test({
         }
 
         test("invalid") {
-            expectException(GroupOrderException::class, "Generator index must be between 1 and 4") {
-                A4.s(5)
-            }
-            expectException(GroupOrderException::class, "Generator index must be between 1 and 4") {
-                A4.s(0)
+            A4.apply {
+                expectException(GroupOrderException::class, "Generator index must be between 1 and 4") {
+                    s(5)
+                }
+                expectException(GroupOrderException::class, "Generator index must be between 1 and 4") {
+                    s(0)
+                }
             }
         }
     }
@@ -42,13 +44,15 @@ class TypeATest : Test({
 
     describe("reduce") {
         test {
-            assertThat(A4.reduce(A4.element(2, 2, 2, 3, 4, 4))).isEqualTo(
-                Composition(A4.s(2), A4.s(3))
-            )
+            A4.apply {
+                assertThat(reduce(element(2, 2, 2, 3, 4, 4)))
+                    .isEqualTo(Composition(s(2), s(3)))
+            }
 
-            assertThat(A3.reduce(Permutation(4, 3, 2, 1))).isEqualTo(
-                Composition(A3.s(1), A3.s(2), A3.s(3), A3.s(1), A3.s(2), A3.s(1))
-            )
+            A3.apply {
+                assertThat(reduce(Permutation(4, 3, 2, 1)))
+                    .isEqualTo(Composition(s(1), s(2), s(3), s(1), s(2), s(1)))
+            }
         }
     }
 })
